@@ -88,7 +88,7 @@ export function AttendanceForm() {
 
   useEffect(() => {
     dispatch(getUserModulesActivityAsyncThunk()).then((res) => {
-      setEmployeeList(res.payload as Employee[]);
+      setEmployeeList((res.payload as Employee[]) ?? []);
     });
   }, []);
 
