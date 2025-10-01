@@ -1,0 +1,4 @@
+export const AXIOS_DISPATCH_EVENT_TYPE = {
+  LOGOUT: "LOGOUT",
+  RESET_STATE: "RESET_STATE",
+};
