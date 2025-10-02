@@ -43,9 +43,11 @@ export default function AttendancePage() {
       //   "_blank"
       // );
 
-      window.location.href = `http://localhost:8000/download-sheet?month=${dayjs(
+      window.location.href = `${
+        process.env.NEXT_PUBLIC_API_BASE_URL
+      }/download-sheet?month=${dayjs(date).format("YYYY-MM")}&day=${dayjs(
         date
-      ).format("YYYY-MM")}&day=${dayjs(date).format("YYYY-MM-DD")}`;
+      ).format("YYYY-MM-DD")}`;
     },
     [date]
   );
