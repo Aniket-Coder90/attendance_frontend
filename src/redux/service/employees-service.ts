@@ -15,3 +15,10 @@ export const employeeAttendanceFillApi = (payload: { employeeId: number; status:
     body: {attendances: payload},
   });
 };
+
+export const downloadCSVFileApi = (payload: { month?: string; day?: string }): TApiResponse<any> => {
+  return GET({
+    URL: API_END_POINTS.DOWNLOAD_CSV,
+    params: payload
+  });
+};

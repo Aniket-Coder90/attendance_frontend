@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  downloadCSVFileApi,
   employeeAttendanceFillApi,
   getEmployeesListApi,
 } from "../service/employees-service";
@@ -32,6 +33,24 @@ export const employeeAttendanceFillAsyncThunk = createAsyncThunk(
   ) => {
     try {
       return (await employeeAttendanceFillApi(payload))?.data;
+    } catch (error) {
+      const { response } = error as TApiFail<[]>;
+      return rejectWithValue(response);
+    }
+  }
+);
+
+export const downloadCSVFileAsyncThunk = createAsyncThunk(
+  "post/employeeAttendance",
+  async (
+    payload: {
+      month?: string;
+      day?: string;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      return (await downloadCSVFileApi(payload))?.data;
     } catch (error) {
       const { response } = error as TApiFail<[]>;
       return rejectWithValue(response);
