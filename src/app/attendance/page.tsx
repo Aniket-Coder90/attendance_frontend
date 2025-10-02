@@ -45,7 +45,7 @@ export default function AttendancePage() {
 
       window.location.href = `${
         process.env.NEXT_PUBLIC_API_BASE_URL
-      }/download-sheet?month=${dayjs(date).format("YYYY-MM")}&day=${dayjs(
+      }download-sheet?month=${dayjs(date).format("YYYY-MM")}&day=${dayjs(
         date
       ).format("YYYY-MM-DD")}`;
     },
