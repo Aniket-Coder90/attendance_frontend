@@ -111,14 +111,27 @@ export default function AttendanceForm({ date }: { date: Dayjs | null }) {
       dataIndex: "attendanceId",
       key: "attendanceId",
       render: (_, record) => (
-        <Radio.Group
-          value={record.status ?? AttendanceStatusEnum.DISABLED}
-          onChange={(e) => handleStatusChange(record.id, e.target.value)}
-        >
-          <Radio value={AttendanceStatusEnum.PRESENT}>Present</Radio>
-          <Radio value={AttendanceStatusEnum.ABSENT}>Absent</Radio>
-          <Radio value={AttendanceStatusEnum.LEAVE}>Leave</Radio>
-        </Radio.Group>
+        <div className="flex">
+          <Radio.Group
+            value={record.status ?? AttendanceStatusEnum.DISABLED}
+            onChange={(e) => handleStatusChange(record.id, e.target.value)}
+          >
+            <Radio value={AttendanceStatusEnum.PRESENT}>Present</Radio>
+            <Radio value={AttendanceStatusEnum.ABSENT}>Absent</Radio>
+            <Radio value={AttendanceStatusEnum.LEAVE}>Leave</Radio>
+          </Radio.Group>
+          <Button
+            type="default"
+            color="danger"
+            onClick={(e) =>
+              handleStatusChange(record.id, AttendanceStatusEnum.DISABLED)
+            }
+            disabled={record.status === AttendanceStatusEnum.DISABLED}
+            className="ml-2"
+          >
+            Reset
+          </Button>
+        </div>
       ),
     },
   ];
