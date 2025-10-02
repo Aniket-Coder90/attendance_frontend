@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Table, Radio, Button, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
@@ -33,7 +33,7 @@ export default function AttendanceForm({ date }: { date: Dayjs | null }) {
   >([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const getEmployeeAttendance = useCallback(() => {
     dispatch(
       getEmployeeListAsyncThunk({
         year: dayjs(date).year(),
@@ -48,18 +48,22 @@ export default function AttendanceForm({ date }: { date: Dayjs | null }) {
           data.map((emp: Employee) => ({
             key: emp.id.toString(),
             ...emp,
-            status: emp.attendances[emp.attendances?.length - 1]?.status, // default
+            status: emp.attendances?.[emp.attendances?.length - 1]?.status, // default
           }))
         );
 
         // Initialize attendance state
         const initialAttendance = data.map((emp: Employee) => ({
           employeeId: emp.id,
-          status: AttendanceStatusEnum.PRESENT,
+          status: AttendanceStatusEnum.DISABLED,
           date: date,
         }));
         setAttendance(initialAttendance);
       });
+  }, [date]);
+
+  useEffect(() => {
+    getEmployeeAttendance();
   }, [dispatch, date]);
 
   // Handle status change
@@ -108,7 +112,7 @@ export default function AttendanceForm({ date }: { date: Dayjs | null }) {
       key: "attendanceId",
       render: (_, record) => (
         <Radio.Group
-          value={record.status ?? AttendanceStatusEnum.PRESENT}
+          value={record.status ?? AttendanceStatusEnum.DISABLED}
           onChange={(e) => handleStatusChange(record.id, e.target.value)}
         >
           <Radio value={AttendanceStatusEnum.PRESENT}>Present</Radio>
@@ -123,8 +127,13 @@ export default function AttendanceForm({ date }: { date: Dayjs | null }) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await dispatch(employeeAttendanceFillAsyncThunk(attendance)).unwrap();
+      await dispatch(
+        employeeAttendanceFillAsyncThunk(
+          attendance?.filter((i) => i.status !== AttendanceStatusEnum.DISABLED)
+        )
+      ).unwrap();
       message.success("Attendance submitted successfully!");
+      getEmployeeAttendance();
     } catch (err) {
       message.error("Failed to submit attendance.");
     } finally {

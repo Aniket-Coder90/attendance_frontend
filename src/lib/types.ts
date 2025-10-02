@@ -28,5 +28,7 @@ export enum AttendanceStatusEnum {
   PRESENT = 1,
   LEAVE = 2,
   PRESENT_FIRST_HALF = 3,
-  PRESENT_SECOND_HALF = 4
+  PRESENT_SECOND_HALF = 4,
+  HOLIDAY = 5,
+  DISABLED = -1
 }
