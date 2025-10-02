@@ -4,6 +4,11 @@ export type Employee = {
   category: string;
   designation: string;
   id: number;
+  attendances: {
+    attendanceId: number
+    status: number
+    date: string
+  }[];
 };
 
 export type AttendanceStatus = "present" | "absent" | "leave";
@@ -17,3 +22,11 @@ export type AttendanceRecord = {
 export type AttendanceEntry = {
   [employeeId: string]: AttendanceStatus;
 };
+
+export enum AttendanceStatusEnum {
+  ABSENT = 0,
+  PRESENT = 1,
+  LEAVE = 2,
+  PRESENT_FIRST_HALF = 3,
+  PRESENT_SECOND_HALF = 4
+}

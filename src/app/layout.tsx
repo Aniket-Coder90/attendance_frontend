@@ -11,6 +11,9 @@ import {
 import { MainNav } from "@/components/app/main-nav";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
+// app/layout.tsx or pages/_app.tsx
+import "antd/dist/reset.css"; // Ant Design v5
+import "@/app/globals.css"; // your global styles
 
 // export const metadata: Metadata = {
 //   title: "AttendaSync",

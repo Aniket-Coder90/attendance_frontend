@@ -65,7 +65,7 @@ const GET = <T>({
   version = "v1",
 }: ApiType<T>) => {
   return makeApi<T>({
-    URL: `${axiosInstance.getUri()}${URL}`,
+    URL: `${axiosInstance.getUri()}/${URL}`,
     method: HttpMethodType.GET,
     headers,
     body,
@@ -85,7 +85,7 @@ const POST = <T>({
   version = "v1",
 }: ApiType<T>) => {
   return makeApi<T>({
-    URL: `${axiosInstance.getUri()}/${version}/${URL}`,
+    URL: `${axiosInstance.getUri()}/${URL}`,
     method: HttpMethodType.POST,
     headers,
     body,
@@ -96,7 +96,7 @@ const POST = <T>({
 
 const PUT = <T>({ URL, headers, body, version = "v1" }: ApiType<T>) => {
   return makeApi<T>({
-    URL: `${axiosInstance.getUri()}/${version}/${URL}`,
+    URL: `${axiosInstance.getUri()}/${URL}`,
     method: HttpMethodType.PUT,
     headers,
     body,
@@ -105,7 +105,7 @@ const PUT = <T>({ URL, headers, body, version = "v1" }: ApiType<T>) => {
 
 const DELETE = <T>({ URL, headers, body, version = "v1" }: ApiType<T>) => {
   return makeApi<T>({
-    URL: `${axiosInstance.getUri()}/${version}/${URL}`,
+    URL: `${axiosInstance.getUri()}/${URL}`,
     method: HttpMethodType.DELETE,
     headers,
     body,
@@ -120,7 +120,7 @@ const PATCH = <T = undefined>({
   version = "v1",
 }: ApiType<T>) => {
   return makeApi<T>({
-    URL: `${axiosInstance.getUri()}/${version}/${URL}`,
+    URL: `${axiosInstance.getUri()}/${URL}`,
     method: HttpMethodType.PATCH,
     headers,
     body,

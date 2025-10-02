@@ -1,9 +1,17 @@
 import { TApiResponse } from "@/types/axios";
 import { API_END_POINTS } from "../endPoints";
-import { GET } from "@/services/api-service";
+import { GET, POST } from "@/services/api-service";
 
-export const getEmployeesList = (): TApiResponse<any> => {
+export const getEmployeesListApi = (params: { year?: number; month?: number; day?: number }): TApiResponse<any> => {
   return GET({
     URL: API_END_POINTS.EMPLOYEES_LIST,
+    params,
+  });
+};
+
+export const employeeAttendanceFillApi = (payload: { employeeId: number; status: number, date: string }[]): TApiResponse<any> => {
+  return POST({
+    URL: API_END_POINTS.EMPLOYEE_ATTENDANCE_FILL,
+    body: {attendances: payload},
   });
 };
