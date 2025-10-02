@@ -21,7 +21,13 @@ type AttendanceRecord = {
   status: AttendanceStatusEnum;
 };
 
-export default function AttendanceForm({ date }: { date: Dayjs | null }) {
+export default function AttendanceForm({
+  date,
+  filter,
+}: {
+  date: Dayjs | null;
+  filter: string;
+}) {
   const dispatch = useAppDispatch();
   const [employeeList, setEmployeeList] = useState<AttendanceRecord[]>([]);
   const [attendance, setAttendance] = useState<
@@ -39,6 +45,7 @@ export default function AttendanceForm({ date }: { date: Dayjs | null }) {
         year: dayjs(date).year(),
         month: dayjs(date).month() + 1,
         day: dayjs(date).date(),
+        designation: filter === "all" ? "" : filter,
       })
     )
       .unwrap()
@@ -60,11 +67,11 @@ export default function AttendanceForm({ date }: { date: Dayjs | null }) {
         }));
         setAttendance(initialAttendance);
       });
-  }, [date]);
+  }, [date, filter]);
 
   useEffect(() => {
     getEmployeeAttendance();
-  }, [dispatch, date]);
+  }, [dispatch, date, filter]);
 
   // Handle status change
   const handleStatusChange = (
@@ -158,7 +165,12 @@ export default function AttendanceForm({ date }: { date: Dayjs | null }) {
     <div>
       <Table columns={columns} dataSource={employeeList} pagination={false} />
       <div style={{ marginTop: 16, textAlign: "right" }}>
-        <Button type="primary" onClick={handleSubmit} loading={loading}>
+        <Button
+          type="primary"
+          onClick={handleSubmit}
+          loading={loading}
+          disabled={loading}
+        >
           Submit Attendance
         </Button>
       </div>

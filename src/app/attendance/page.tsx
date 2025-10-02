@@ -2,16 +2,23 @@
 
 import AttendanceForm from "@/components/attendance/attendance-form";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { downloadCSVFileAsyncThunk } from "@/redux/async-thunk/employees-async-thunk";
-import { Button, DatePicker, Popover } from "antd";
+import {
+  downloadCSVFileAsyncThunk,
+  getDesignationListAsyncThunk,
+} from "@/redux/async-thunk/employees-async-thunk";
+import { Button, DatePicker, Popover, Select } from "antd";
 import { format } from "date-fns";
 import dayjs, { Dayjs } from "dayjs";
 import { Download, LucideDownload } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function AttendancePage() {
   const today = dayjs(); // current date (dayjs object)
   const [date, setDate] = useState<Dayjs | null>(today);
+
+  const [designationOptions, setDesignationOptions] = useState<string[]>([]);
+
+  const [filter, setFilter] = useState<string>("");
 
   const dispatch = useAppDispatch();
 
@@ -24,25 +31,6 @@ export default function AttendancePage() {
         : {
             day: dayjs(date).format("YYYY-MM-DD"),
           };
-      // dispatch(downloadCSVFileAsyncThunk(payload))
-      //   .unwrap()
-      //   .then((res) => {
-      //   console.log(res);
-      //   const url = window.URL.createObjectURL(new Blob([res]));
-      //   const link = document.createElement("a");
-      //   link.href = url;
-      //   link.setAttribute("download", "attendance.csv");
-      //   document.body.appendChild(link);
-      //   link.click();
-      //   link.remove();
-      // });
-      // window.open(
-      //   `http://localhost:8000/download-sheet?month=${dayjs(date).format(
-      //     "YYYY-MM"
-      //   )}&day=${dayjs(date).format("YYYY-MM-DD")}`,
-      //   "_blank"
-      // );
-
       const payloadParams = isMonthly
         ? `month=${payload.month}`
         : `day=${payload.day}`;
@@ -51,6 +39,18 @@ export default function AttendancePage() {
     },
     [date]
   );
+
+  const getDesignationList = useCallback(() => {
+    dispatch(getDesignationListAsyncThunk())
+      .unwrap()
+      .then((res) => {
+        setDesignationOptions(res.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    getDesignationList();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -65,6 +65,20 @@ export default function AttendancePage() {
           </p>
         </header>
         <div className="flex items-center gap-4">
+          <Select
+            className="min-w-52"
+            defaultValue={"all"}
+            onSelect={(e) => setFilter(e)}
+          >
+            <Select.Option value="all">All</Select.Option>
+            {designationOptions?.map((des: string) => {
+              return (
+                <Select.Option value={des} key={des}>
+                  {des}
+                </Select.Option>
+              );
+            })}
+          </Select>
           <DatePicker
             format="DD-MM-YYYY"
             value={date}
@@ -95,7 +109,7 @@ export default function AttendancePage() {
         </div>
       </div>
       <main>
-        <AttendanceForm date={date} />
+        <AttendanceForm date={date} filter={filter} />
       </main>
     </div>
   );

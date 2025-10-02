@@ -2,10 +2,16 @@ import { TApiResponse } from "@/types/axios";
 import { API_END_POINTS } from "../endPoints";
 import { GET, POST } from "@/services/api-service";
 
-export const getEmployeesListApi = (params: { year?: number; month?: number; day?: number }): TApiResponse<any> => {
+export const getEmployeesListApi = (params: { year?: number; month?: number; day?: number; designation?: string }): TApiResponse<any> => {
+  const { year, month, day, designation } = params;
   return GET({
     URL: API_END_POINTS.EMPLOYEES_LIST,
-    params,
+    params: {
+      ...(year && { year }),
+      ...(month && { month }),
+      ...(day && { day }),
+      ...(designation?.length && { designation }),
+    },
   });
 };
 
@@ -20,5 +26,11 @@ export const downloadCSVFileApi = (payload: { month?: string; day?: string }): T
   return GET({
     URL: API_END_POINTS.DOWNLOAD_CSV,
     params: payload
+  });
+};
+
+export const getDesignationListApi = (): TApiResponse<any> => {
+  return GET({
+    URL: API_END_POINTS.GET_DESIGNATION_OPTIONS
   });
 };
