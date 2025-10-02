@@ -43,11 +43,11 @@ export default function AttendancePage() {
       //   "_blank"
       // );
 
-      window.location.href = `${
-        process.env.NEXT_PUBLIC_API_BASE_URL
-      }download-sheet?month=${dayjs(date).format("YYYY-MM")}&day=${dayjs(
-        date
-      ).format("YYYY-MM-DD")}`;
+      const payloadParams = isMonthly
+        ? `month=${payload.month}`
+        : `day=${payload.day}`;
+
+      window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}download-sheet?${payloadParams}`;
     },
     [date]
   );
