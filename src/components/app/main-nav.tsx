@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   FileClock,
   LayoutDashboard,
   Users,
   LogOut,
   ChevronRight,
-} from 'lucide-react';
+  NotebookIcon,
+} from "lucide-react";
 import {
   SidebarHeader,
   SidebarMenu,
@@ -18,24 +19,30 @@ import {
   SidebarFooter,
   SidebarTrigger,
   useSidebar,
-} from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar';
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navItems = [
   {
-    href: '/attendance',
-    icon: FileClock,
-    label: 'Attendance',
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    label: "Dashboard",
   },
   {
-    href: '/dashboard',
-    icon: LayoutDashboard,
-    label: 'Dashboard',
+    href: "/attendance",
+    icon: FileClock,
+    label: "Attendance",
+  },
+  {
+    href: "/employee",
+    icon: Users,
+    label: "Employee",
+  },
+  {
+    href: "/projects",
+    icon: NotebookIcon,
+    label: "Projects",
   },
 ];
 
@@ -47,9 +54,9 @@ export function MainNav() {
     <>
       <SidebarHeader className="border-b">
         <div className="flex w-full items-center justify-between p-2">
-           <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Users className="size-8 text-primary" />
-             <h1 className="text-lg font-bold font-headline">AttendaSync</h1>
+            <h1 className="text-lg font-bold font-headline">AttendaSync</h1>
           </div>
           <SidebarTrigger className="hidden md:flex" />
         </div>
@@ -73,11 +80,12 @@ export function MainNav() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="mt-auto border-t p-2">
-        <div
-          className="flex items-center gap-2 rounded-md p-2 transition-colors hover:bg-sidebar-accent"
-        >
+        <div className="flex items-center gap-2 rounded-md p-2 transition-colors hover:bg-sidebar-accent">
           <Avatar className="size-8">
-            <AvatarImage src="https://picsum.photos/seed/admin/100/100" data-ai-hint="person portrait" />
+            <AvatarImage
+              src="https://picsum.photos/seed/admin/100/100"
+              data-ai-hint="person portrait"
+            />
             <AvatarFallback>AD</AvatarFallback>
           </Avatar>
           <div className="flex-1 overflow-hidden">
@@ -86,7 +94,7 @@ export function MainNav() {
               admin@example.com
             </p>
           </div>
-          {state === 'expanded' && (
+          {state === "expanded" && (
             <Button variant="ghost" size="icon" className="size-8">
               <LogOut className="size-4" />
             </Button>

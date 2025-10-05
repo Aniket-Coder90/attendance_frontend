@@ -1,8 +1,9 @@
 import { TApiResponse } from "@/types/axios";
 import { API_END_POINTS } from "../endPoints";
-import { GET, POST } from "@/services/api-service";
+import { DELETE, GET, PATCH, POST } from "@/services/api-service";
+import { TCreateEmployeeApiPayloadType, TEmployeeType, TUpdateEmployeeApiPayloadType } from "@/types/employee-type";
 
-export const getEmployeesListApi = (params: { year?: number; month?: number; day?: number; designation?: string }): TApiResponse<any> => {
+export const getEmployeesListApi = (params: { year?: number; month?: number; day?: number; designation?: string }): TApiResponse<TEmployeeType[]> => {
   const { year, month, day, designation } = params;
   return GET({
     URL: API_END_POINTS.EMPLOYEES_LIST,
@@ -12,6 +13,26 @@ export const getEmployeesListApi = (params: { year?: number; month?: number; day
       ...(day && { day }),
       ...(designation?.length && { designation }),
     },
+  });
+};
+
+export const addEmployeesApi = (payload: TCreateEmployeeApiPayloadType): TApiResponse<TEmployeeType> => {
+  return POST({
+    URL: API_END_POINTS.CREATE_EMPLOYEE,
+    body: payload,
+  });
+};
+
+export const updateEmployeesApi = (payload: TUpdateEmployeeApiPayloadType, emp_id: number): TApiResponse<TEmployeeType> => {
+  return PATCH({
+    URL: API_END_POINTS.UPDATE_EMPLOYEE(emp_id),
+    body: payload,
+  });
+};
+
+export const removeEmployeeApi = (emp_id: number): TApiResponse<TEmployeeType> => {
+  return DELETE({
+    URL: API_END_POINTS.REMOVE_EMPLOYEE(emp_id),
   });
 };
 
@@ -29,7 +50,7 @@ export const downloadCSVFileApi = (payload: { month?: string; day?: string }): T
   });
 };
 
-export const getDesignationListApi = (): TApiResponse<any> => {
+export const getDesignationListApi = (): TApiResponse<string[]> => {
   return GET({
     URL: API_END_POINTS.GET_DESIGNATION_OPTIONS
   });

@@ -53,17 +53,22 @@ export default function AttendanceForm({
         const data = res.data ?? [];
         setEmployeeList(
           data.map((emp: Employee) => ({
-            key: emp.id.toString(),
-            ...emp,
-            status: emp.attendances?.[emp.attendances?.length - 1]?.status, // default
+            key: (emp?.id ?? 0)?.toString(),
+            id: emp?.id ?? 0,
+            name: emp.name,
+            email: emp?.email,
+            designation: emp.designation,
+            category: emp.category,
+            status:
+              emp?.attendances?.[emp?.attendances?.length - 1]?.status ?? -1, // default
           }))
         );
 
         // Initialize attendance state
         const initialAttendance = data.map((emp: Employee) => ({
-          employeeId: emp.id,
+          employeeId: emp?.id ?? 0,
           status: AttendanceStatusEnum.DISABLED,
-          date: date,
+          date: (date ?? "") as string,
         }));
         setAttendance(initialAttendance);
       });
@@ -153,7 +158,6 @@ export default function AttendanceForm({
         )
       ).unwrap();
       message.success("Attendance submitted successfully!");
-      getEmployeeAttendance();
     } catch (err) {
       message.error("Failed to submit attendance.");
     } finally {

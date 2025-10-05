@@ -1,6 +1,7 @@
 "use client";
 
 import AttendanceForm from "@/components/attendance/attendance-form";
+import PageHeader from "@/components/PageHeader";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import {
   downloadCSVFileAsyncThunk,
@@ -53,64 +54,61 @@ export default function AttendancePage() {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="p-4">
       <div className="flex items-start justify-between">
-        <header className="space-y-1.5">
-          <h1 className="text-2xl font-bold tracking-tight font-headline sm:text-3xl">
-            Daily Attendance
-          </h1>
-          <p className="text-muted-foreground">
-            Mark attendance for all employees for{" "}
-            {dayjs(date).format("DD MMM YYYY")} .
-          </p>
-        </header>
-        <div className="flex items-center gap-4">
-          <Select
-            className="min-w-52"
-            defaultValue={"all"}
-            onSelect={(e) => setFilter(e)}
-          >
-            <Select.Option value="all">All</Select.Option>
-            {designationOptions?.map((des: string) => {
-              return (
-                <Select.Option value={des} key={des}>
-                  {des}
-                </Select.Option>
-              );
-            })}
-          </Select>
-          <DatePicker
-            format="DD-MM-YYYY"
-            value={date}
-            defaultValue={today}
-            allowClear={false}
-            onChange={(val) => setDate(val)}
-            className="w-52"
-            maxDate={today}
-            minDate={dayjs().subtract(1, "month")}
-          />
-          <Popover
-            content={
-              <div className="flex flex-col gap-3">
-                <Button onClick={() => handleDownloadCSV(true)}>
-                  For {dayjs(date).format("MMM YYYY")}
-                </Button>
-                <Button onClick={() => handleDownloadCSV(false)}>
-                  For {dayjs(date).format("DD MMM YYYY")}
-                </Button>
-              </div>
-            }
-          >
-            <Button className="px-2 text-black p-0">
-              <LucideDownload width={16} color="#000" stroke="#000" /> Download
-              CSV
-            </Button>
-          </Popover>
-        </div>
+        <PageHeader
+          className="w-full flex items-center justify-between"
+          label="Daily Attendance"
+          supportText={`Mark attendance for all employees for ${dayjs(
+            date
+          ).format("DD MMM YYYY")}`}
+        >
+          <div className="flex items-center gap-4">
+            <Select
+              className="min-w-52"
+              defaultValue={"all"}
+              onSelect={(e) => setFilter(e)}
+            >
+              <Select.Option value="all">All</Select.Option>
+              {designationOptions?.map((des: string) => {
+                return (
+                  <Select.Option value={des} key={des}>
+                    {des}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+            <DatePicker
+              format="DD-MM-YYYY"
+              value={date}
+              defaultValue={today}
+              allowClear={false}
+              onChange={(val) => setDate(val)}
+              className="w-52"
+              maxDate={today}
+              minDate={dayjs().subtract(1, "month")}
+            />
+            <Popover
+              content={
+                <div className="flex flex-col gap-3">
+                  <Button onClick={() => handleDownloadCSV(true)}>
+                    For {dayjs(date).format("MMM YYYY")}
+                  </Button>
+                  <Button onClick={() => handleDownloadCSV(false)}>
+                    For {dayjs(date).format("DD MMM YYYY")}
+                  </Button>
+                </div>
+              }
+            >
+              <Button className="px-2 text-black p-0">
+                <LucideDownload width={16} color="#000" stroke="#000" />{" "}
+                Download CSV
+              </Button>
+            </Popover>
+          </div>
+        </PageHeader>
       </div>
-      <main>
-        <AttendanceForm date={date} filter={filter} />
-      </main>
+      <AttendanceForm date={date} filter={filter} />
     </div>
   );
 }

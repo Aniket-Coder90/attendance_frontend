@@ -1,6 +1,9 @@
 import store from "../redux/store";
+import { TEmployeeState } from "./employee-type";
 
-type TRootState = {};
+type TRootState = {
+    employees: TEmployeeState
+};
 
 type TAppDispatch = typeof store.dispatch;
 

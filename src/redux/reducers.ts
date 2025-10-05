@@ -23,7 +23,7 @@ const rootReducer = (state: any, action: any) => {
 
 const appReducer = combineReducers({
   // Add your reducers here
-  employee: employeeSlice,
+  employees: employeeSlice,
 });
 
 export default rootReducer;

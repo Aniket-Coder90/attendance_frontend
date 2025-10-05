@@ -1,10 +1,10 @@
 export type Employee = {
   name: string;
-  email: any;
+  email?: string;
   category: string;
   designation: string;
-  id: number;
-  attendances: {
+  id?: number;
+  attendances?: {
     attendanceId: number
     status: number
     date: string
