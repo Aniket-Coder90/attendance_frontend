@@ -6,13 +6,15 @@ export type TEmployeeState = {
         getDesignationListLoader: boolean;
         createEmployeeLoader: boolean;
         updateEmployeeLoader: boolean;
+        getCategoryListLoader: boolean;
     },
     employeeList: {
         total: number,
         list: TEmployeeType[],
         page: number
     },
-    designationList: TEmployeeDesignationListApiResponseType
+    designationList: TEmployeeDesignationListApiResponseType;
+    categoryList: TEmployeeDesignationListApiResponseType;
 }
 
 export type TEmployeeType = {
@@ -43,3 +45,4 @@ export type TUpdateEmployeeApiPayloadType = {
 }
 
 export type TEmployeeDesignationListApiResponseType = string[]
+export type TEmployeeCategoryListApiResponseType = string[]

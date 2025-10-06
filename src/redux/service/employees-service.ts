@@ -55,3 +55,9 @@ export const getDesignationListApi = (): TApiResponse<string[]> => {
     URL: API_END_POINTS.GET_DESIGNATION_OPTIONS
   });
 };
+
+export const getCategoriesOptionsApi = (): TApiResponse<string[]> => {
+  return GET({
+    URL: API_END_POINTS.GET_CATEGORIES_OPTIONS
+  });
+};

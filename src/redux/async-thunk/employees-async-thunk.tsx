@@ -3,6 +3,7 @@ import {
   addEmployeesApi,
   downloadCSVFileApi,
   employeeAttendanceFillApi,
+  getCategoriesOptionsApi,
   getDesignationListApi,
   getEmployeesListApi,
   removeEmployeeApi,
@@ -114,10 +115,22 @@ export const downloadCSVFileAsyncThunk = createAsyncThunk(
 );
 
 export const getDesignationListAsyncThunk = createAsyncThunk(
-  "post/getDesignationList",
+  "get/getDesignationList",
   async (_, { rejectWithValue }) => {
     try {
       return (await getDesignationListApi())?.data;
+    } catch (error) {
+      const { response } = error as TApiFail<[]>;
+      return rejectWithValue(response);
+    }
+  }
+);
+
+export const getCategoriesOptionsAsyncThunk = createAsyncThunk(
+  "get/getCategoriesList",
+  async (_, { rejectWithValue }) => {
+    try {
+      return (await getCategoriesOptionsApi())?.data;
     } catch (error) {
       const { response } = error as TApiFail<[]>;
       return rejectWithValue(response);

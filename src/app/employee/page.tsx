@@ -33,6 +33,7 @@ const Employee = () => {
   const dispatch = useAppDispatch();
   const [isToggle, setIsToggle] = useState(false);
   const [editEmployeeId, setEditEmployeeId] = useState(0);
+  const [filter, setFilter] = useState<string>("");
 
   const hookForm = useForm<CreateEmployeeFormType>({
     resolver: zodResolver(createEmployeeSchema),
@@ -89,16 +90,20 @@ const Employee = () => {
   }, []);
 
   const getEmployeesList = useCallback(async () => {
-    await dispatch(getEmployeeListAsyncThunk({}));
-  }, []);
-
-  const getInitialCalls = useCallback(async () => {
-    await Promise.all([getDesignationList(), getEmployeesList()]);
-  }, [getDesignationList, getEmployeesList]);
+    await dispatch(
+      getEmployeeListAsyncThunk({
+        designation: filter === "all" ? "" : filter,
+      })
+    );
+  }, [filter]);
 
   useEffect(() => {
-    getInitialCalls();
+    getDesignationList();
   }, []);
+
+  useEffect(() => {
+    getEmployeesList();
+  }, [filter]);
 
   const fields: (keyof CreateEmployeeFormType)[] = [
     "name",
@@ -157,6 +162,7 @@ const Employee = () => {
             className="w-[200px]"
             defaultValue={"all"}
             placeholder="Designation"
+            onChange={(e) => setFilter(e)}
           >
             <Select.Option value="all">All</Select.Option>
             {designationList?.map((des) => (

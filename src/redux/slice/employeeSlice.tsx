@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   addEmployeeAsyncThunk,
+  getCategoriesOptionsAsyncThunk,
   getDesignationListAsyncThunk,
   getEmployeeListAsyncThunk,
   removeEmployeeAsyncThunk,
@@ -14,6 +15,7 @@ const initialState: TEmployeeState = {
     getDesignationListLoader: false,
     createEmployeeLoader: false,
     updateEmployeeLoader: false,
+    getCategoryListLoader: false,
   },
   employeeList: {
     total: 0,
@@ -21,6 +23,7 @@ const initialState: TEmployeeState = {
     page: 1,
   },
   designationList: [],
+  categoryList: [],
 };
 
 const employeeSlice = createSlice({
@@ -42,6 +45,19 @@ const employeeSlice = createSlice({
       })
       .addCase(getEmployeeListAsyncThunk.rejected, (state, action) => {
         state.loader.getEmployeeListLoader = false;
+      })
+      .addCase(getCategoriesOptionsAsyncThunk.pending, (state, action) => {
+        state.loader.getCategoryListLoader = true;
+      })
+      .addCase(
+        getCategoriesOptionsAsyncThunk.fulfilled,
+        (state, { payload }) => {
+          state.loader.getCategoryListLoader = false;
+          state.categoryList = payload?.data;
+        }
+      )
+      .addCase(getCategoriesOptionsAsyncThunk.rejected, (state, action) => {
+        state.loader.getCategoryListLoader = false;
       })
       .addCase(addEmployeeAsyncThunk.pending, (state, action) => {
         state.loader.createEmployeeLoader = true;

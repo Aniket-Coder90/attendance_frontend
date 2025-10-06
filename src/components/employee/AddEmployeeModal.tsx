@@ -1,9 +1,11 @@
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { CreateEmployeeFormType } from "@/schema/createEmployee-schema";
 import { Button, Input, Modal, ModalProps, Select } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import PageHeader from "../PageHeader";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { getCategoriesOptionsAsyncThunk } from "@/redux/async-thunk/employees-async-thunk";
 
 const AddEmployeeModal = ({
   hookForm,
@@ -22,10 +24,15 @@ const AddEmployeeModal = ({
   };
 } & ModalProps) => {
   const { control } = hookForm;
+  const dispatch = useAppDispatch();
 
-  const { designationList, employeeList } = useAppSelector(
+  const { designationList, categoryList } = useAppSelector(
     (state) => state.employees
   );
+
+  useEffect(() => {
+    dispatch(getCategoriesOptionsAsyncThunk());
+  }, []);
 
   return (
     <Modal
@@ -85,7 +92,7 @@ const AddEmployeeModal = ({
           name="category"
           render={({ field }) => (
             <Select {...field} placeholder="Select one">
-              {designationList.map((item) => (
+              {categoryList.map((item) => (
                 <Select.Option key={item} value={item}>
                   {item}
                 </Select.Option>
