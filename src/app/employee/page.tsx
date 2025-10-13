@@ -1,7 +1,10 @@
 "use client";
 
+import AddEmployeeModal from "@/components/employee/AddEmployeeModal";
+import EmployeeList from "@/components/employee/EmployeeList";
 import PageHeader from "@/components/PageHeader";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector } from "@/hooks/useAppSelector";
 import {
   addEmployeeAsyncThunk,
   getDesignationListAsyncThunk,
@@ -13,8 +16,8 @@ import {
   createEmployeeSchema,
 } from "@/schema/createEmployee-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Select, Table, TableColumnsType } from "antd";
-import { EditIcon, PlusCircle, Trash2 } from "lucide-react";
+import { Button, Select } from "antd";
+import { PlusCircle } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -23,11 +26,6 @@ import {
   useState,
 } from "react";
 import { useForm } from "react-hook-form";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { TEmployeeType } from "@/types/employee-type";
-import RemoveEmployeeModal from "@/components/employee/RemoveEmployeeModal";
-import EmployeeList from "@/components/employee/EmployeeList";
-import AddEmployeeModal from "@/components/employee/AddEmployeeModal";
 
 const Employee = () => {
   const dispatch = useAppDispatch();
@@ -53,7 +51,6 @@ const Employee = () => {
     reset: () => {
       hookForm.reset({
         name: "",
-        email: "",
         category: "",
         designation: "",
       });
@@ -74,7 +71,7 @@ const Employee = () => {
     setEditEmployeeId(emp_id);
     hookForm.reset({
       name: employeeList.list?.find((emp) => emp.id === emp_id)?.name,
-      email: employeeList.list?.find((emp) => emp.id === emp_id)?.email,
+      email: "",
       category: employeeList.list?.find((emp) => emp.id === emp_id)?.category,
       designation: employeeList.list?.find((emp) => emp.id === emp_id)
         ?.designation,
@@ -119,7 +116,7 @@ const Employee = () => {
           updateEmployeeAsyncThunk({
             payload: {
               name: hookForm.getValues("name"),
-              email: hookForm.getValues("email"),
+              email: "",
               category: hookForm.getValues("category"),
               designation: hookForm.getValues("designation"),
             },
@@ -136,7 +133,7 @@ const Employee = () => {
         dispatch(
           addEmployeeAsyncThunk({
             name: hookForm.getValues("name"),
-            email: hookForm.getValues("email"),
+            email: "",
             category: hookForm.getValues("category"),
             designation: hookForm.getValues("designation"),
           })

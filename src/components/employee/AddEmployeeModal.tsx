@@ -26,7 +26,7 @@ const AddEmployeeModal = ({
   const { control } = hookForm;
   const dispatch = useAppDispatch();
 
-  const { designationList, categoryList } = useAppSelector(
+  const { loader, designationList, categoryList } = useAppSelector(
     (state) => state.employees
   );
 
@@ -51,6 +51,9 @@ const AddEmployeeModal = ({
               ref?.current?.toggleModal();
               ref?.current?.reset();
             }}
+            disabled={
+              loader?.createEmployeeLoader || loader?.updateEmployeeLoader
+            }
           >
             Cancel
           </Button>
@@ -58,6 +61,9 @@ const AddEmployeeModal = ({
             className="primary"
             type="primary"
             onClick={() => ref?.current?.submit()}
+            disabled={
+              loader?.createEmployeeLoader || loader?.updateEmployeeLoader
+            }
           >
             Save
           </Button>
@@ -76,22 +82,38 @@ const AddEmployeeModal = ({
                 required
                 placeholder="Enter name"
                 status={fieldState?.error?.message && "error"}
+                disabled={
+                  loader?.createEmployeeLoader || loader?.updateEmployeeLoader
+                }
               />
             );
           }}
         />
-        <Controller
+        {/* <Controller
           control={control}
           name="email"
           render={({ field }) => (
-            <Input {...field} placeholder="Enter email" type="email" />
+            <Input
+              {...field}
+              placeholder="Enter email"
+              type="email"
+              disabled={
+                loader?.createEmployeeLoader || loader?.updateEmployeeLoader
+              }
+            />
           )}
-        />
+        /> */}
         <Controller
           control={control}
           name="category"
           render={({ field }) => (
-            <Select {...field} placeholder="Select one">
+            <Select
+              {...field}
+              placeholder="Select one"
+              disabled={
+                loader?.createEmployeeLoader || loader?.updateEmployeeLoader
+              }
+            >
               {categoryList.map((item) => (
                 <Select.Option key={item} value={item}>
                   {item}
@@ -104,7 +126,13 @@ const AddEmployeeModal = ({
           control={control}
           name="designation"
           render={({ field }) => (
-            <Select {...field} placeholder="Select one">
+            <Select
+              {...field}
+              placeholder="Select one"
+              disabled={
+                loader?.createEmployeeLoader || loader?.updateEmployeeLoader
+              }
+            >
               {designationList.map((item) => (
                 <Select.Option key={item} value={item}>
                   {item}
